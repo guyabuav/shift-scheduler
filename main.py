@@ -1,5 +1,4 @@
 from models.employee import Employee
-from models.shift import Shift
 from models.manager import Manager
 from models.login import Login
 from models.shiftscheduler import ShiftScheduler
@@ -38,29 +37,59 @@ emp5.add_constraint("Tuesday", "Morning")
 emp5.add_constraint("Friday", "Morning")
 emp5.add_constraint("Friday", "Night")
 
-# shift1 = Shift("03/03/2025", "Morning", 2)
-# shift2 = Shift("03/03/2025", "Evening", 2)
-# shift3 = Shift("03/03/2025", "Night", 2)
-# shift_list = [shift1, shift2, shift3]
-
 shift_scheduler = ShiftScheduler(employee_list)
 shift_scheduler.create_weekly_shifts("2/3/2025")
-shift_scheduler.assign_shifts()
+shift_scheduler.assign_shifts("2/3/2025")
 
 for employee in employee_list:
     print(f"{employee} assigned to {shift_scheduler.get_employee_shift_count(employee)}")
 
-
 shift_scheduler.print_schedule()
 
-shift_scheduler.print_employee_shifts(emp1)
-shift_scheduler.print_employee_shifts(emp2)
-shift_scheduler.print_employee_shifts(emp3)
-shift_scheduler.print_employee_shifts(emp4)
-shift_scheduler.print_employee_shifts(emp5)
-shift_scheduler.print_employee_shifts(emp6)
+shift_scheduler.print_employee_shifts(emp1, "2/3/2025")
+shift_scheduler.print_employee_shifts(emp2, "2/3/2025")
+shift_scheduler.print_employee_shifts(emp3, "2/3/2025")
+shift_scheduler.print_employee_shifts(emp4, "2/3/2025")
+shift_scheduler.print_employee_shifts(emp5, "2/3/2025")
+shift_scheduler.print_employee_shifts(emp6, "2/3/2025")
+
 
 shift_scheduler.print_workload_matrix()
 
+shift_scheduler.create_weekly_shifts("9/3/2025")
+shift_scheduler.assign_shifts("9/3/2025")
 
+for employee in employee_list:
+    print(f"{employee} assigned to {shift_scheduler.get_employee_shift_count(employee)}")
 
+shift_scheduler.print_schedule()
+
+# shift_scheduler.print_employee_shifts(emp1, "9/3/2025")
+# shift_scheduler.print_employee_shifts(emp2, "9/3/2025")
+# shift_scheduler.print_employee_shifts(emp3, "9/3/2025")
+# shift_scheduler.print_employee_shifts(emp4, "9/3/2025")
+# shift_scheduler.print_employee_shifts(emp5, "9/3/2025")
+# shift_scheduler.print_employee_shifts(emp6, "9/3/2025")
+
+shift_scheduler.create_weekly_shifts("16/3/2025")
+shift_scheduler.assign_shifts("16/3/2025")
+
+shift_scheduler.create_weekly_shifts("23/3/2025")
+shift_scheduler.assign_shifts("23/3/2025")
+
+shift_scheduler.create_weekly_shifts("16/3/2025")
+shift_scheduler.assign_shifts("30/3/2025")
+
+shift_scheduler.create_weekly_shifts("6/4/2025")
+shift_scheduler.assign_shifts("6/4/2025")
+
+shift_scheduler.create_weekly_shifts("13/4/2025")
+shift_scheduler.assign_shifts("13/4/2025")
+
+shift_scheduler.create_weekly_shifts("20/4/2025")
+shift_scheduler.assign_shifts("20/4/2025")
+
+shift_scheduler.create_weekly_shifts("27/4/2025")
+shift_scheduler.assign_shifts("27/4/2025")
+
+shift_scheduler.print_workload_matrix()

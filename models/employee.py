@@ -14,5 +14,14 @@ class Employee(Person):
             self.constraints[day] = []
         self.constraints[day].append(shift_type)
 
+        def submit_constraints(self, employee, week_start_date, constraints):
+            """ מוסיף אילוצים לעובד עבור שבוע מסוים """
+            if employee not in self.employees:
+                print(f"❌ Employee {employee.full_name} not found!")
+                return
+
+            employee.constraints[week_start_date] = constraints
+            print(f"✅ Constraints submitted for {employee.full_name} in the week of {week_start_date}")
+
     def __str__(self):
         return super().__str__() + f"Employee Numer: {self.employee_number}, User Id: {self.user_id}, Constraints: {self.constraints}"
