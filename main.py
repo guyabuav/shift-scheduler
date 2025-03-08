@@ -53,3 +53,14 @@ for employee in employee_list:
 
 shift_scheduler.print_schedule()
 
+shift_scheduler.print_employee_shifts(emp1)
+shift_scheduler.print_employee_shifts(emp2)
+shift_scheduler.print_employee_shifts(emp3)
+shift_scheduler.print_employee_shifts(emp4)
+shift_scheduler.print_employee_shifts(emp5)
+shift_scheduler.print_employee_shifts(emp6)
+
+shift_scheduler.print_workload_matrix()
+
+
+

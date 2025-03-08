@@ -99,3 +99,22 @@ class ShiftScheduler:
 
     def get_employee_shift_count(self, employee):  # Return amount of shift for each employee for week X
         return sum(1 for shift in self.shifts if employee in shift.employees)
+
+    def print_employee_shifts(self, employee):
+        employee_shifts = [shift for shift in self.shifts if employee in shift.employees]
+
+        if not employee_shifts:
+            print(f"❌ {employee.full_name} has no assigned shifts.")
+            return
+
+        print(f"\n📅 Shifts for {employee.full_name}:")
+        for shift in employee_shifts:
+            print(f"   🕒 {shift.date} - {shift.shift_type}")
+
+    def print_workload_matrix(self):
+        print("\n📊 Workload Matrix:")
+        print("-" * 30)
+        for emp in self.employees:
+            print(f"👤 {emp.full_name}: {self.workload_matrix[emp]} shifts")
+        print("-" * 30)
+
