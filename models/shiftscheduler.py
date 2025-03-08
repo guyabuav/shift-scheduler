@@ -42,7 +42,7 @@ class ShiftScheduler:
         for shift in week_shifts:
             day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
             shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
-            best_employee = self.find_best_employee(shift, assigned_shifts, shift_types_assigned, employee_daily_shifts)
+            best_employee = self.find_best_employee(shift, assigned_shifts, shift_types_assigned, employee_daily_shifts, week_start_date)
             if best_employee:
                 shift.add_employee(best_employee)
                 assigned_shifts[best_employee] += 1
@@ -56,7 +56,7 @@ class ShiftScheduler:
         for shift in week_shifts:
             while len(shift.employees) < shift.max_employees:
                 best_employee = self.find_best_employee(shift, assigned_shifts, shift_types_assigned,
-                                                        employee_daily_shifts, allow_doubles=True)
+                                                        employee_daily_shifts, week_start_date, allow_doubles=True)
                 if not best_employee or assigned_shifts[best_employee] >= 5:
                     break
                 day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
@@ -69,9 +69,9 @@ class ShiftScheduler:
                 print(f"✅ {best_employee.full_name} assigned to additional shift {shift.shift_type} on {shift.date}")
 
     def find_best_employee(self, shift, assigned_shifts, shift_types_assigned, employee_daily_shifts,
-                           allow_doubles=False):
+                           week_start_date, allow_doubles=False):
         """ מחפש את העובד הכי מתאים לשיבוץ במשמרת בהתחשב במטריצת המשקלים """
-        available_employees = [emp for emp in self.employees if not self.has_constraint(emp, shift)]
+        available_employees = [emp for emp in self.employees if not self.has_constraint(emp, shift, week_start_date)]
 
         if not available_employees:
             return None  # אין עובדים זמינים למשמרת הזו
@@ -101,10 +101,15 @@ class ShiftScheduler:
 
         return None  # אם לא נמצא עובד מתאים
 
-    def has_constraint(self, employee, shift):  # Checking if employee have constraints for specific shift
+    def has_constraint(self, employee, shift, week_start_date):
+        """ בודק אם לעובד יש אילוץ בשבוע הספציפי """
         shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
         day_name = shift_date.strftime("%A")
-        return shift.shift_type in employee.constraints.get(day_name, [])
+
+        # בודקים אם יש אילוצים לשבוע הזה
+        week_constraints = employee.constraints.get(week_start_date, {})
+
+        return shift.shift_type in week_constraints.get(day_name, [])
 
     def has_insufficient_rest(self, employee, shift):  # Checking 8 hours rest between 2 shifts
         shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
