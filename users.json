@@ -1,0 +1,30 @@
+{
+    "guyabuav": {
+        "password": "24680",
+        "role": "Employee"
+    },
+    "matanrak": {
+        "password": "13579",
+        "role": "Employee"
+    },
+    "bibinet": {
+        "password": "46802",
+        "role": "Employee"
+    },
+    "amitron": {
+        "password": "35791",
+        "role": "Employee"
+    },
+    "dankof": {
+        "password": "68024",
+        "role": "Employee"
+    },
+    "chinos": {
+        "password": "80246",
+        "role": "Employee"
+    },
+    "admin": {
+        "password": "admin",
+        "role": "Manager"
+    }
+}

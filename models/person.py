@@ -7,4 +7,3 @@ class Person:
 
     def __str__(self):
         return f"Name: {self.full_name}, Id: {self.person_id}, Phone Number: {self.phone_number}, Email: {self.email}"
-

@@ -167,3 +167,13 @@ class ShiftScheduler:
         week_start = datetime.strptime(week_start_date, "%d/%m/%Y")
         week_end = week_start + timedelta(days=6)
         return week_start <= shift_date <= week_end
+
+    def get_employee_shifts(self, username, week_start_date):
+        """ מחזיר רשימה של משמרות שעובד מסוים שובץ בהן לפי שם המשתמש שלו """
+        employee_shifts = []
+        for shift in self.shifts:
+            if self.is_in_week(shift.date, week_start_date):
+                for emp in shift.employees:
+                    if emp.user_id == username:  # 🔹 עדכון לשימוש ב-user_id במקום username
+                        employee_shifts.append(shift)
+        return employee_shifts

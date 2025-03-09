@@ -6,16 +6,18 @@ from models.employee import Employee
 
 
 class ShiftSchedulerGUI:
-    def __init__(self, root, shift_scheduler):
+    def __init__(self, root, shift_scheduler, logout_callback):
         self.root = root
         self.root.title("Shift Scheduler")
 
         self.shift_scheduler = shift_scheduler
+        self.logout_callback = logout_callback  # פונקציה להתנתקות
+
         self.selected_week = tk.StringVar()
         self.week_options = ["02/03/2025", "09/03/2025"]
         self.selected_week.set(self.week_options[0])
 
-        # תפריט בחירת שבוע
+        # יצירת תפריט בחירת שבוע
         week_label = tk.Label(root, text="Select Week:")
         week_label.grid(row=0, column=0, padx=5, pady=5)
 
@@ -31,7 +33,11 @@ class ShiftSchedulerGUI:
         assign_button = tk.Button(root, text="Assign Shifts", command=self.assign_shifts)
         assign_button.grid(row=0, column=3, padx=5, pady=5)
 
-        # יצירת טבלה חדשה: 3 שורות (בוקר/ערב/לילה) × 7 עמודות (ימים א'-ש')
+        # כפתור Logout
+        logout_button = tk.Button(root, text="Logout", command=self.logout)
+        logout_button.grid(row=0, column=4, padx=5, pady=5)
+
+        # יצירת טבלת המשמרות
         self.shift_labels = {}  # מילון לשמירת הפניות לכל משבצת בטבלה
         self.create_shift_table()
 
@@ -82,6 +88,16 @@ class ShiftSchedulerGUI:
         selected_week = self.selected_week.get()
         self.shift_scheduler.assign_shifts(selected_week)
         self.update_schedule()  # ריענון התצוגה
+
+    def logout(self):
+        """ התנתקות מהממשק וחזרה למסך ההתחברות """
+        try:
+            self.root.destroy()  # סוגר את חלון המנהל
+        except tk.TclError:
+            pass  # אם החלון כבר סגור, התעלם מהשגיאה
+
+        if self.logout_callback:
+            self.logout_callback()  # קריאה חזרה למסך ההתחברות
 
 
     @staticmethod
