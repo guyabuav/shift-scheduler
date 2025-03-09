@@ -72,13 +72,24 @@ class ShiftSchedulerGUI:
                 label.grid(row=row + 2, column=col + 1, padx=5, pady=5)
                 self.shift_labels[(day, shift_type)] = label
 
+
     def update_schedule(self, event=None):
         selected_week = self.selected_week.get()
+
+        print(f"🔍 Checking shifts for week: {selected_week}")
+        print(f"📂 Current shifts in memory: {[s.__dict__ for s in self.shift_scheduler.shifts]}")
 
         for label in self.shift_labels.values():
             label.config(text="--")
 
         week_shifts = [s for s in self.shift_scheduler.shifts if self.shift_scheduler.is_in_week(s.date, selected_week)]
+
+        if not week_shifts:
+            print(f"⚠️ No shifts found for {selected_week} in memory.")
+        else:
+            for shift in week_shifts:
+                print(
+                    f"✅ Found shift: {shift.date}, {shift.shift_type}, Employees: {[e.full_name for e in shift.employees]}")
 
         for shift in week_shifts:
             shift_date = shift.date

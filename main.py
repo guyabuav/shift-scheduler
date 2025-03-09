@@ -17,17 +17,16 @@ manager1 = Manager("Bibi Net", 1292, 8743131321, "bibon@gmail.com", 39373, "admi
 employee_list = [emp1, emp2, emp3, emp4, emp5, emp6]
 
 shift_scheduler = ShiftScheduler(employee_list)
-shift_scheduler.create_weekly_shifts("2/3/2025")
-shift_scheduler.create_weekly_shifts("9/3/2025")
-shift_scheduler.create_weekly_shifts("16/3/2025")
-shift_scheduler.create_weekly_shifts("23/3/2025")
-shift_scheduler.create_weekly_shifts("30/3/2025")
+shift_scheduler.create_weekly_shifts("02/03/2025")
+shift_scheduler.create_weekly_shifts("09/03/2025")
+shift_scheduler.create_weekly_shifts("16/03/2025")
+shift_scheduler.create_weekly_shifts("23/03/2025")
+shift_scheduler.create_weekly_shifts("30/03/2025")
 
 print(emp1.constraints)
 emp1.save_constraints_to_file()
 
 login_manager = LoginManager()
-
 
 
 def open_login_gui():
