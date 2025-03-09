@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 from models.shift import Shift
 
@@ -103,27 +104,36 @@ class ShiftScheduler:
         return None  # אם לא נמצא עובד מתאים
 
     def has_constraint(self, employee, shift, week_start_date):
-        """ בודק אם לעובד יש אילוץ בשבוע הספציפי """
+        """ בודק אם לעובד יש אילוץ לשבוע וליום מסוים """
         shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
         week_start = datetime.strptime(week_start_date, "%d/%m/%Y")
 
-        # ✅ תיקון - פורמט שבוע תואם למה שב-JSON
-        week_key = week_start.strftime("%d/%m/%Y").lstrip("0").replace("/0", "/")
+        # 🔥 ודא שהמפתח נכתב בפורמט הנכון
+        week_key = week_start.strftime("%d/%m/%Y")
 
-        # ✅ התאמת שם היום למה שיש ב-JSON (אות ראשונה גדולה)
-        day_name = shift_date.strftime("%A").capitalize()  # מוודא התאמה ל-JSON
+        # 🔥 הדפסת נתונים למעקב
+        print(f"🔍 Checking constraint for {employee.full_name} on {shift.date} - {shift.shift_type}")
+        print(f"    Week constraints in JSON: {json.dumps(employee.constraints, indent=4)}")
 
-        # בדיקה אם קיימים אילוצים לשבוע הספציפי
+        # 🔥 מציאת היום בצורה תקנית (תוודא שהתיעוד ב-JSON זהה לזה)
+        day_name = shift_date.strftime("%A")
+
+        # 🔥 שליפת כל האילוצים של השבוע מתוך המילון
         week_constraints = employee.constraints.get(week_key, {})
 
-        # ✅ וידוא שהתאריך נכון
-        print(f"🔍 Checking constraint for {employee.full_name} on {shift.date} - {shift.shift_type}")
-        print(f"    Week constraints: {week_constraints}")  # הדפסה של כל אילוצי השבוע
-        print(f"    Looking for constraints under: {day_name}")  # 🔹 בדיקה שהמפתח נכון
-        print(f"    Found constraint: {shift.shift_type in week_constraints.get(day_name, [])}")
+        if not week_constraints:
+            print(f"⚠️ No constraints found for week {week_key} - Assuming no constraints.")
+            return False  # אם אין נתונים כלל, אין אילוצים
 
-        # בדיקה אם יש אילוץ ליום ולמשמרת הספציפית
-        return shift.shift_type in week_constraints.get(day_name, [])
+        # 🔥 שליפת רשימת האילוצים לאותו יום
+        day_constraints = week_constraints.get(day_name, [])
+
+        # 🔥 בדיקה האם המשמרת מופיעה באילוצים
+        has_restriction = shift.shift_type in day_constraints
+
+        print(f"    Found constraint: {has_restriction}")
+
+        return has_restriction
 
     def has_insufficient_rest(self, employee, shift):  # Checking 8 hours rest between 2 shifts
         shift_date = datetime.strptime(shift.date, "%d/%m/%Y")

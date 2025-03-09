@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from datetime import datetime, timedelta
+from models.constraint_gui import ConstraintManager
 
 
 class EmployeeScheduleGUI:
@@ -23,14 +24,14 @@ class EmployeeScheduleGUI:
         self.tree.column("Shift", anchor="center", width=120)
         self.tree.pack(pady=10)
 
-        # מסגרת לבחירת שבוע וכפתור רענון
+        # מסגרת לבחירת שבוע וכפתורים
         controls_frame = tk.Frame(main_frame)
         controls_frame.pack(pady=5)
 
         # תפריט בחירת שבוע
         self.selected_week = tk.StringVar()
-        self.week_options = self.get_week_start_dates()  # הצגת ימי ראשון בלבד
-        self.week_options.sort()  # מיון תאריכים
+        self.week_options = self.get_week_start_dates()
+        self.week_options.sort()
         if self.week_options:
             self.selected_week.set(self.week_options[0])
 
@@ -42,6 +43,10 @@ class EmployeeScheduleGUI:
         # כפתור רענון
         refresh_button = tk.Button(controls_frame, text="Refresh", command=self.update_schedule)
         refresh_button.pack(side="left", padx=5)
+
+        # כפתור להגשת אילוצים (תוקן ✅)
+        constraints_button = tk.Button(controls_frame, text="Submit Constraints", command=self.open_constraints_window)
+        constraints_button.pack(side="left", padx=5)
 
         # כפתור Logout (מופרד מהשאר)
         logout_button = tk.Button(main_frame, text="Logout", command=self.logout, fg="white", bg="red",
@@ -86,7 +91,27 @@ class EmployeeScheduleGUI:
         start_dates = set()
         for shift in self.shift_scheduler.shifts:
             shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
-            week_start = shift_date - timedelta(days=(shift_date.weekday() + 1) % 7)  # מזהה את יום ראשון כתחילת השבוע
+            week_start = shift_date - timedelta(days=(shift_date.weekday() + 1) % 7)
             start_dates.add(week_start.strftime("%d/%m/%Y"))
 
-        return sorted(start_dates)  # מחזיר רשימה ממוינת עם תאריכי ראשון בלבד
+        return sorted(start_dates)
+
+    def open_constraints_window(self):
+        """ פותח חלון חדש להזנת אילוצים """
+        constraints_window = tk.Toplevel(self.root)
+        constraints_window.title("Submit Constraints")
+        employee = self.get_logged_in_employee()
+        if not employee:
+            tk.messagebox.showerror("Error", "No employee found.")
+            return
+
+        ConstraintManager(constraints_window, employee)
+
+
+    def get_logged_in_employee(self):
+        """ מחזיר את אובייקט העובד לפי שם המשתמש המחובר """
+        for emp in self.shift_scheduler.employees:
+            if emp.user_id == self.username:  # בדיקה לפי user_id
+                return emp
+        return None
+

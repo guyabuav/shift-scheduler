@@ -3,14 +3,16 @@ from tkinter import ttk
 from datetime import datetime, timedelta
 from models.shiftscheduler import ShiftScheduler
 from models.employee import Employee
+from models.constraint_gui import ConstraintManager  # נוסיף מחלקה לניהול אילוצים
 
 
 class ShiftSchedulerGUI:
-    def __init__(self, root, shift_scheduler, logout_callback):
+    def __init__(self, root, shift_scheduler, employee, logout_callback):
         self.root = root
         self.root.title("Shift Scheduler")
 
         self.shift_scheduler = shift_scheduler
+        self.employee = employee  # העובד המחובר
         self.logout_callback = logout_callback  # פונקציה להתנתקות
 
         self.selected_week = tk.StringVar()
@@ -18,6 +20,7 @@ class ShiftSchedulerGUI:
         if self.week_options:
             self.selected_week.set(self.week_options[0])
 
+        print("Creating buttons...")
         # יצירת תפריט בחירת שבוע
         week_label = tk.Label(root, text="Select Week:")
         week_label.grid(row=0, column=0, padx=5, pady=5)
@@ -34,9 +37,13 @@ class ShiftSchedulerGUI:
         assign_button = tk.Button(root, text="Assign Shifts", command=self.assign_shifts)
         assign_button.grid(row=0, column=3, padx=5, pady=5)
 
+#        # כפתור להגשת אילוצים
+ #       constraints_button = tk.Button(root, text="Submit Constraints", command=self.open_constraints_window)
+  #      constraints_button.grid(row=0, column=4, padx=5, pady=5)
+
         # כפתור Logout
         logout_button = tk.Button(root, text="Logout", command=self.logout)
-        logout_button.grid(row=0, column=4, padx=5, pady=5)
+        logout_button.grid(row=0, column=5, padx=5, pady=5)
 
         # יצירת טבלת המשמרות
         self.shift_labels = {}  # מילון לשמירת הפניות לכל משבצת בטבלה
@@ -44,6 +51,24 @@ class ShiftSchedulerGUI:
 
         # מילוי ראשוני של הנתונים
         self.update_schedule()
+
+    def get_logged_in_employee(self):
+        """ מחזיר את אובייקט העובד שמחובר כרגע למערכת """
+        for emp in self.shift_scheduler.employees:
+            if emp.user_id == self.shift_scheduler.current_user_id:  # בדיקה לפי user_id
+                return emp
+        return None
+
+    def open_constraints_window(self):
+        """ פותח חלון חדש להזנת אילוצים """
+        employee = self.get_logged_in_employee()  # קבלת העובד המחובר
+        if not employee:
+            tk.messagebox.showerror("Error", "No employee logged in.")
+            return
+
+        constraints_window = tk.Toplevel(self.root)
+        constraints_window.title("Submit Constraints")
+        ConstraintManager(constraints_window, employee)  # פתיחת מנהל האילוצים עם העובד המחובר
 
     def create_shift_table(self):
         """יוצר טבלה מותאמת אישית של משמרות (3x7)"""
@@ -100,7 +125,6 @@ class ShiftSchedulerGUI:
         if self.logout_callback:
             self.logout_callback()  # קריאה חזרה למסך ההתחברות
 
-
     @staticmethod
     def get_day_name(date_str):
         from datetime import datetime
@@ -115,4 +139,3 @@ class ShiftSchedulerGUI:
             start_dates.add(week_start.strftime("%d/%m/%Y"))
 
         return sorted(start_dates)  # מחזיר רשימה ממוינת של ימי ראשון
-
