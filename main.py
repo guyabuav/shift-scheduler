@@ -20,7 +20,7 @@ employee_list = [emp1, emp2, emp3, emp4, emp5, emp6]
 shift_scheduler = ShiftScheduler(employee_list)
 shift_scheduler.create_weekly_shifts("2/3/2025")
 shift_scheduler.print_employee_shifts(emp1, "2/3/2025")
-shift_scheduler.assign_shifts("2/3/2025")
+# shift_scheduler.assign_shifts("2/3/2025")
 # מערכת התחברות
 login_manager = LoginManager()
 

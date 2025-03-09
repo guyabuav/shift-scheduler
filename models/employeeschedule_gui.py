@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from datetime import datetime, timedelta
 
 
 class EmployeeScheduleGUI:
@@ -28,7 +29,7 @@ class EmployeeScheduleGUI:
 
         # תפריט בחירת שבוע
         self.selected_week = tk.StringVar()
-        self.week_options = list(set([s.date for s in shift_scheduler.shifts]))  # רשימת כל התאריכים בהם יש משמרות
+        self.week_options = self.get_week_start_dates()  # הצגת ימי ראשון בלבד
         self.week_options.sort()  # מיון תאריכים
         if self.week_options:
             self.selected_week.set(self.week_options[0])
@@ -80,4 +81,12 @@ class EmployeeScheduleGUI:
         if self.logout_callback:
             self.logout_callback()  # מחזיר למסך ההתחברות
 
+    def get_week_start_dates(self):
+        """ מחזיר רשימה של תאריכי תחילת שבוע מתוך המשמרות הקיימות """
+        start_dates = set()
+        for shift in self.shift_scheduler.shifts:
+            shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
+            week_start = shift_date - timedelta(days=(shift_date.weekday() + 1) % 7)  # מזהה את יום ראשון כתחילת השבוע
+            start_dates.add(week_start.strftime("%d/%m/%Y"))
 
+        return sorted(start_dates)  # מחזיר רשימה ממוינת עם תאריכי ראשון בלבד
