@@ -79,7 +79,6 @@ class ConstraintManager:
 
         self.employee.submit_constraints(week_start_date, constraints)
 
-        # ✅ נוסיף הדפסה לבדיקה
         print(f"✅ Constraints saved for {self.employee.full_name}: {json.dumps(self.employee.constraints, indent=4)}")
 
         messagebox.showinfo("Success", "Constraints saved successfully!")

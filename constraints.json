@@ -5,11 +5,21 @@
                 "Morning",
                 "Evening",
                 "Night"
+            ],
+            "Monday": [
+                "Morning",
+                "Evening",
+                "Night"
             ]
         }
     },
     "matanrak": {
         "02/03/2025": {
+            "Friday": [
+                "Morning",
+                "Evening",
+                "Night"
+            ],
             "Saturday": [
                 "Morning",
                 "Evening",

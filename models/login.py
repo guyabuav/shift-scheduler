@@ -1,4 +1,6 @@
 from models.manager import Manager
+import json
+import os
 
 
 class Login():
@@ -14,17 +16,12 @@ class Login():
         return None
 
     def access_scheduler(user, scheduler):
-        """Allow only managers to manage ShiftScheduler."""
         if isinstance(user, Manager):
             print("✅ Access granted to ShiftScheduler.")
             return scheduler
         else:
             print("❌ Access denied. Only managers can modify shifts.")
             return None
-
-
-import json
-import os
 
 
 class LoginManager:

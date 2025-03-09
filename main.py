@@ -7,7 +7,6 @@ from models.shiftscheduler import ShiftScheduler
 from models.shiftscheduler_gui import ShiftSchedulerGUI
 from models.employeeschedule_gui import EmployeeScheduleGUI
 
-# יצירת עובדים ומנהל
 emp1 = Employee("Guy Abuav", 1996, 8784778, "guyabuav@gmail.com", 39371, "guyabuav", "#####", None)
 emp2 = Employee("Matan Rak", 1992, 874312378, "rakoon@gmail.com", 39372, "matanrak", "#####", None)
 emp3 = Employee("Bibi Net", 1292, 8743131321, "bibon@gmail.com", 39373, "bibinet", "#####", None)
@@ -24,33 +23,27 @@ shift_scheduler.create_weekly_shifts("16/3/2025")
 shift_scheduler.create_weekly_shifts("23/3/2025")
 shift_scheduler.create_weekly_shifts("30/3/2025")
 
-print(emp1.constraints)  # 📌 בדוק שהנתונים נשמרו בזיכרון
-emp1.save_constraints_to_file()  # 📌 שמור לקובץ
+print(emp1.constraints)
+emp1.save_constraints_to_file()
 
-# shift_scheduler.print_employee_shifts(emp1, "2/3/2025")
-# shift_scheduler.assign_shifts("2/3/2025")
-# מערכת התחברות
 login_manager = LoginManager()
 
 
-# יצירת מחלקת שיבוץ
 
 def open_login_gui():
-    """ פותח מחדש את מסך ההתחברות """
     root = tk.Tk()
     login_app = LoginGUI(root, on_login_success)
     root.mainloop()
 
 
 def logout():
-    """ סוגר את ה-GUI ומחזיר למסך ההתחברות """
     try:
-        root.quit()  # מסיים את ה-loop הראשי של tkinter
-        root.destroy()  # סוגר את החלון הנוכחי אם הוא קיים
+        root.quit()
+        root.destroy()
     except tk.TclError:
-        pass  # אם החלון כבר סגור, אל תעשה כלום
+        pass
 
-    open_login_gui()  # פותח מחדש את מסך ההתחברות
+    open_login_gui()
 
 
 def on_login_success(username, role):
@@ -67,14 +60,6 @@ def on_login_success(username, role):
     root.mainloop()
 
 
-# הפעלת מסך התחברות במקום להפעיל את ה-GUI מיד
 root = tk.Tk()
 login_app = LoginGUI(root, on_login_success)
 root.mainloop()
-
-
-def open_login_gui():
-    """ פותח מחדש את מסך ההתחברות """
-    root = tk.Tk()
-    login_app = LoginGUI(root, on_login_success)
-    root.mainloop()

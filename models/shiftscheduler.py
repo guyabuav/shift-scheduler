@@ -72,24 +72,18 @@ class ShiftScheduler:
 
     def find_best_employee(self, shift, assigned_shifts, shift_types_assigned, employee_daily_shifts,
                            week_start_date, allow_doubles=False):
-        """ מחפש את העובד הכי מתאים לשיבוץ במשמרת בהתחשב במטריצת המשקלים """
         available_employees = [emp for emp in self.employees if not self.has_constraint(emp, shift, week_start_date)]
 
         if not available_employees:
-            return None  # אין עובדים זמינים למשמרת הזו
+            return None
 
-        # מחשבים אינדקסים מתאימים למטריצת המשקלים
         day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
         shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
 
-        # ממיינים עובדים לפי:
-        # 1️⃣ עובד עם הכי מעט שיבוצים כלליים
-        # 2️⃣ עובד עם הכי מעט שיבוצים במשמרת הזו באותו יום (מהמטריצה)
-        # 3️⃣ עובד שעדיין לא שובץ למשמרת מהסוג הזה
         available_employees.sort(key=lambda emp: (
-            assigned_shifts[emp],  # עובד עם פחות משמרות קיבל עדיפות
-            self.workload_matrix[emp][day_index][shift_index],  # משקל נמוך במשבצת -> עדיפות
-            0 if shift.shift_type not in shift_types_assigned[emp] else 1  # מי שאין לו משמרת מהסוג הזה יקבל עדיפות
+            assigned_shifts[emp],
+            self.workload_matrix[emp][day_index][shift_index],
+            0 if shift.shift_type not in shift_types_assigned[emp] else 1
         ))
 
         for employee in available_employees:
@@ -97,38 +91,31 @@ class ShiftScheduler:
                 continue
             if self.has_insufficient_rest(employee, shift):
                 continue
-            if shift.date in employee_daily_shifts[employee]:  # עובד לא יכול לעבוד פעמיים באותו יום
+            if shift.date in employee_daily_shifts[employee]:
                 continue
             return employee
 
-        return None  # אם לא נמצא עובד מתאים
+        return None
 
     def has_constraint(self, employee, shift, week_start_date):
-        """ בודק אם לעובד יש אילוץ לשבוע וליום מסוים """
         shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
         week_start = datetime.strptime(week_start_date, "%d/%m/%Y")
 
-        # 🔥 ודא שהמפתח נכתב בפורמט הנכון
         week_key = week_start.strftime("%d/%m/%Y")
 
-        # 🔥 הדפסת נתונים למעקב
         print(f"🔍 Checking constraint for {employee.full_name} on {shift.date} - {shift.shift_type}")
         print(f"    Week constraints in JSON: {json.dumps(employee.constraints, indent=4)}")
 
-        # 🔥 מציאת היום בצורה תקנית (תוודא שהתיעוד ב-JSON זהה לזה)
         day_name = shift_date.strftime("%A")
 
-        # 🔥 שליפת כל האילוצים של השבוע מתוך המילון
         week_constraints = employee.constraints.get(week_key, {})
 
         if not week_constraints:
             print(f"⚠️ No constraints found for week {week_key} - Assuming no constraints.")
-            return False  # אם אין נתונים כלל, אין אילוצים
+            return False
 
-        # 🔥 שליפת רשימת האילוצים לאותו יום
         day_constraints = week_constraints.get(day_name, [])
 
-        # 🔥 בדיקה האם המשמרת מופיעה באילוצים
         has_restriction = shift.shift_type in day_constraints
 
         print(f"    Found constraint: {has_restriction}")
@@ -153,7 +140,6 @@ class ShiftScheduler:
         return sum(1 for shift in self.shifts if employee in shift.employees)
 
     def print_employee_shifts(self, employee, week_start_date):
-        """ מדפיס את כל המשמרות של עובד מסוים בשבוע מסוים """
         week_shifts = [shift for shift in self.shifts if
                        employee in shift.employees and self.is_in_week(shift.date, week_start_date)]
 
@@ -166,7 +152,6 @@ class ShiftScheduler:
             print(f"   🕒 {shift.date} - {shift.shift_type}")
 
     def print_workload_matrix(self):
-        """ מדפיס את מטריצת המשקלות לכל עובד """
         days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
         shifts = ["Morning", "Evening", "Night"]
 
@@ -178,26 +163,24 @@ class ShiftScheduler:
             print("-" * 50)
 
             for day_idx, day in enumerate(days):
-                row = f"{day:<10}"  # שם היום
+                row = f"{day:<10}"
                 for shift_idx in range(3):
-                    row += f"{self.workload_matrix[emp][day_idx][shift_idx]:<10}"  # ערך המשמרת במטריצה
+                    row += f"{self.workload_matrix[emp][day_idx][shift_idx]:<10}"
                 print(row)
 
             print("-" * 50)
 
     def is_in_week(self, shift_date, week_start_date):
-        """ בודק אם תאריך המשמרת שייך לשבוע הנתון """
         shift_date = datetime.strptime(shift_date, "%d/%m/%Y")
         week_start = datetime.strptime(week_start_date, "%d/%m/%Y")
         week_end = week_start + timedelta(days=6)
         return week_start <= shift_date <= week_end
 
     def get_employee_shifts(self, username, week_start_date):
-        """ מחזיר רשימה של משמרות שעובד מסוים שובץ בהן לפי שם המשתמש שלו """
         employee_shifts = []
         for shift in self.shifts:
             if self.is_in_week(shift.date, week_start_date):
                 for emp in shift.employees:
-                    if emp.user_id == username:  # 🔹 עדכון לשימוש ב-user_id במקום username
+                    if emp.user_id == username:
                         employee_shifts.append(shift)
         return employee_shifts
