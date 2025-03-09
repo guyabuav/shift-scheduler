@@ -17,9 +17,28 @@ emp6 = Employee("chen os", 1222, 80131321, "chenos@gmail.com", 39376, "chinos", 
 manager1 = Manager("Bibi Net", 1292, 8743131321, "bibon@gmail.com", 39373, "admin", "#####", None)
 employee_list = [emp1, emp2, emp3, emp4, emp5, emp6]
 
+emp1.add_constraint("2/3/2025", "Sunday", "Morning")
+emp1.add_constraint("2/3/2025", "Monday", "Morning")
+emp1.add_constraint("2/3/2025", "Monday", "Morning")
+emp1.add_constraint("2/3/2025", "Tuesday", "Morning")
+emp1.add_constraint("2/3/2025", "Wednesday", "Morning")
+emp1.add_constraint("2/3/2025", "Thursday", "Morning")
+
 shift_scheduler = ShiftScheduler(employee_list)
 shift_scheduler.create_weekly_shifts("2/3/2025")
-shift_scheduler.print_employee_shifts(emp1, "2/3/2025")
+shift_scheduler.create_weekly_shifts("9/3/2025")
+shift_scheduler.create_weekly_shifts("16/3/2025")
+shift_scheduler.create_weekly_shifts("23/3/2025")
+shift_scheduler.create_weekly_shifts("30/3/2025")
+
+print(emp1.constraints)  # 📌 בדוק שהנתונים נשמרו בזיכרון
+emp1.save_constraints_to_file()  # 📌 שמור לקובץ
+
+
+
+
+
+# shift_scheduler.print_employee_shifts(emp1, "2/3/2025")
 # shift_scheduler.assign_shifts("2/3/2025")
 # מערכת התחברות
 login_manager = LoginManager()

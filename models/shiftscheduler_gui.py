@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from datetime import datetime
+from datetime import datetime, timedelta
 from models.shiftscheduler import ShiftScheduler
 from models.employee import Employee
 
@@ -14,8 +14,9 @@ class ShiftSchedulerGUI:
         self.logout_callback = logout_callback  # פונקציה להתנתקות
 
         self.selected_week = tk.StringVar()
-        self.week_options = ["02/03/2025", "09/03/2025"]
-        self.selected_week.set(self.week_options[0])
+        self.week_options = self.get_week_start_dates()  # שליפת רשימת שבועות זמינים
+        if self.week_options:
+            self.selected_week.set(self.week_options[0])
 
         # יצירת תפריט בחירת שבוע
         week_label = tk.Label(root, text="Select Week:")
@@ -104,3 +105,14 @@ class ShiftSchedulerGUI:
     def get_day_name(date_str):
         from datetime import datetime
         return datetime.strptime(date_str, "%d/%m/%Y").strftime("%A")
+
+    def get_week_start_dates(self):
+        """ מחזיר רשימה של תאריכי תחילת שבוע מתוך המשמרות הקיימות (ראשון עד שבת) """
+        start_dates = set()
+        for shift in self.shift_scheduler.shifts:
+            shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
+            week_start = shift_date - timedelta(days=(shift_date.weekday() + 1) % 7)  # תמיד מוצא את יום ראשון
+            start_dates.add(week_start.strftime("%d/%m/%Y"))
+
+        return sorted(start_dates)  # מחזיר רשימה ממוינת של ימי ראשון
+

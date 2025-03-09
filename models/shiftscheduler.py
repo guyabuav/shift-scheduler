@@ -42,7 +42,8 @@ class ShiftScheduler:
         for shift in week_shifts:
             day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
             shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
-            best_employee = self.find_best_employee(shift, assigned_shifts, shift_types_assigned, employee_daily_shifts, week_start_date)
+            best_employee = self.find_best_employee(shift, assigned_shifts, shift_types_assigned, employee_daily_shifts,
+                                                    week_start_date)
             if best_employee:
                 shift.add_employee(best_employee)
                 assigned_shifts[best_employee] += 1
@@ -104,11 +105,24 @@ class ShiftScheduler:
     def has_constraint(self, employee, shift, week_start_date):
         """ בודק אם לעובד יש אילוץ בשבוע הספציפי """
         shift_date = datetime.strptime(shift.date, "%d/%m/%Y")
-        day_name = shift_date.strftime("%A")
+        week_start = datetime.strptime(week_start_date, "%d/%m/%Y")
 
-        # בודקים אם יש אילוצים לשבוע הזה
-        week_constraints = employee.constraints.get(week_start_date, {})
+        # ✅ תיקון - פורמט שבוע תואם למה שב-JSON
+        week_key = week_start.strftime("%d/%m/%Y").lstrip("0").replace("/0", "/")
 
+        # ✅ התאמת שם היום למה שיש ב-JSON (אות ראשונה גדולה)
+        day_name = shift_date.strftime("%A").capitalize()  # מוודא התאמה ל-JSON
+
+        # בדיקה אם קיימים אילוצים לשבוע הספציפי
+        week_constraints = employee.constraints.get(week_key, {})
+
+        # ✅ וידוא שהתאריך נכון
+        print(f"🔍 Checking constraint for {employee.full_name} on {shift.date} - {shift.shift_type}")
+        print(f"    Week constraints: {week_constraints}")  # הדפסה של כל אילוצי השבוע
+        print(f"    Looking for constraints under: {day_name}")  # 🔹 בדיקה שהמפתח נכון
+        print(f"    Found constraint: {shift.shift_type in week_constraints.get(day_name, [])}")
+
+        # בדיקה אם יש אילוץ ליום ולמשמרת הספציפית
         return shift.shift_type in week_constraints.get(day_name, [])
 
     def has_insufficient_rest(self, employee, shift):  # Checking 8 hours rest between 2 shifts
