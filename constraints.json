@@ -2,7 +2,9 @@
     "guyabuav": {
         "02/03/2025": {
             "Sunday": [
-                "Morning"
+                "Morning",
+                "Evening",
+                "Night"
             ],
             "Monday": [
                 "Morning"

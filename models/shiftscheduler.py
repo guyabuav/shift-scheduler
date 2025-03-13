@@ -13,6 +13,7 @@ class ShiftScheduler:
         self.workload_matrix = {
             emp: [[0 for _ in range(3)] for _ in range(7)] for emp in employees
         }
+        self.load_workload_matrix()
         self.load_schedule_from_file()
 
     def create_weekly_shifts(self, start_date):
@@ -107,6 +108,7 @@ class ShiftScheduler:
                         all_employees_filled = False  # יש עדיין עובדים עם פחות מ-5 משמרות
 
         self.save_schedule_to_file()
+        self.save_workload_matrix()
 
     def find_best_employee(self, shift, assigned_shifts, shift_types_assigned, employee_daily_shifts,
                            week_start_date, allow_doubles=False):
@@ -163,7 +165,8 @@ class ShiftScheduler:
 
     def get_employee_shifts(self, username, week_start_date):
         return [shift for shift in self.shifts if
-                self.is_in_week(shift.date, week_start_date) and any(emp.user_id == username for emp in shift.employees)]
+                self.is_in_week(shift.date, week_start_date) and any(
+                    emp.user_id == username for emp in shift.employees)]
 
     def save_schedule_to_file(self):
         file_path = "schedule.json"
@@ -217,3 +220,41 @@ class ShiftScheduler:
             print(f"❌ Error: Invalid JSON format in schedule.json: {e}")
         except Exception as e:
             print(f"⚠️ Error loading schedule: {e}")
+
+    def save_workload_matrix(self):
+        file_path = "workload_matrix.json"
+        try:
+            matrix_data = {
+                emp.user_id: self.workload_matrix[emp] for emp in self.employees
+            }
+            with open(file_path, "w") as file:
+                json.dump(matrix_data, file, indent=4)
+            print("✅ Workload matrix saved successfully!")
+        except Exception as e:
+            print(f"❌ Error saving workload matrix: {e}")
+
+    def load_workload_matrix(self):
+        file_path = "workload_matrix.json"
+        if not os.path.exists(file_path):
+            print("⚠️ Workload matrix file not found. Starting fresh.")
+            return
+
+        try:
+            with open(file_path, "r") as file:
+                data = file.read().strip()
+                if not data:
+                    print("⚠️ Warning: workload_matrix.json is empty! Keeping fresh matrix.")
+                    return  # ❌ אל תדרוס את מה שקיים
+
+                matrix_data = json.loads(data)
+
+                for emp in self.employees:
+                    if emp.user_id in matrix_data:
+                        self.workload_matrix[emp] = matrix_data[emp]
+
+                print("✅ Workload matrix loaded successfully!")
+
+        except json.JSONDecodeError as e:
+            print(f"❌ Error: Invalid JSON format in workload_matrix.json: {e}")
+        except Exception as e:
+            print(f"⚠️ Error loading workload matrix: {e}")
