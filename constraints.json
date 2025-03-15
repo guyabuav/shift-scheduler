@@ -32,6 +32,17 @@
             "Saturday": [
                 "Morning"
             ]
+        },
+        "23/03/2025": {
+            "Sunday": [
+                "Morning"
+            ],
+            "Tuesday": [
+                "Evening"
+            ],
+            "Saturday": [
+                "Night"
+            ]
         }
     },
     "matanrak": {

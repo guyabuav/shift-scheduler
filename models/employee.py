@@ -40,7 +40,7 @@ class Employee(Person):
                         all_constraints = json.load(file)
                     except json.JSONDecodeError:
                         print(f"⚠️ Warning: {file_path} was corrupted. Resetting constraints.")
-                        all_constraints = {}  # אם הקובץ פגום, נתחיל חדש
+                        all_constraints = {}
 
             all_constraints[self.user_id] = self.constraints
 

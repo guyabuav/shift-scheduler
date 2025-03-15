@@ -37,12 +37,11 @@ class ShiftScheduler:
 
     def assign_shifts(self, week_start_date):
 
-        # 🔍 בדיקה אם כבר יש משמרות מוקצות לשבוע הזה
         existing_shifts = [s for s in self.shifts if self.is_in_week(s.date, week_start_date) and s.employees]
 
         if existing_shifts:
-            messagebox.showerror("שגיאה", f"❌ שיבוץ עבור השבוע {week_start_date} כבר בוצע!")
-            return  # יציאה מהפונקציה - לא משבצים שוב
+            messagebox.showerror(f"Error❌ Schedule for {week_start_date} Already exists")
+            return
 
         employee_daily_shifts = {emp: set() for emp in self.employees}
         assigned_shifts = {emp: 0 for emp in self.employees}
@@ -52,13 +51,12 @@ class ShiftScheduler:
 
         print("\n🔄 Assigning shifts - Ensuring all shifts are covered")
 
-        # 🔹 שלב 1: לוודא שכל משמרת מקבלת לפחות עובד אחד
         all_shifts_filled = False
         while not all_shifts_filled:
-            all_shifts_filled = True  # נניח שכל המשמרות מלאות
+            all_shifts_filled = True
 
             for shift in week_shifts:
-                if len(shift.employees) == 0:  # אם המשמרת ריקה
+                if len(shift.employees) == 0:
                     best_employee = self.find_best_employee(shift, assigned_shifts, shift_types_assigned,
                                                             employee_daily_shifts, week_start_date)
                     if best_employee:
@@ -67,7 +65,6 @@ class ShiftScheduler:
                         shift_types_assigned[best_employee].add(shift.shift_type)
                         employee_daily_shifts[best_employee].add(shift.date)
 
-                        # ✅ עדכון המטריצה רק אחרי שהעובד שובץ בפועל
                         day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
                         shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
                         print(f"Before: {self.workload_matrix[best_employee]}")
@@ -76,14 +73,13 @@ class ShiftScheduler:
 
                         print(f"✅ {best_employee.full_name} assigned to {shift.shift_type} on {shift.date}")
                     else:
-                        all_shifts_filled = False  # עדיין יש משמרות ריקות
+                        all_shifts_filled = False
 
         print("\n🔄 Assigning shifts - Ensuring each employee has 5 shifts")
 
-        # 🔹 שלב 2: לוודא שכל עובד מקבל 5 משמרות
         all_employees_filled = False
         while not all_employees_filled:
-            all_employees_filled = True  # נניח שכל העובדים קיבלו 5 משמרות
+            all_employees_filled = True
 
             for employee in self.employees:
                 if assigned_shifts[employee] < 5:
@@ -98,15 +94,14 @@ class ShiftScheduler:
                                 shift_types_assigned[best_employee].add(shift.shift_type)
                                 employee_daily_shifts[best_employee].add(shift.date)
 
-                                # ✅ עדכון המטריצה אחרי כל שיבוץ נוסף
                                 day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
                                 shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
                                 self.workload_matrix[best_employee][day_index][shift_index] += 1
 
-                                break  # יוצאים כדי לא לחזור על אותו עובד יותר מדי פעמים
+                                break
 
                     if assigned_shifts[employee] < 5:
-                        all_employees_filled = False  # יש עדיין עובדים עם פחות מ-5 משמרות
+                        all_employees_filled = False
 
         self.save_schedule_to_file()
         self.save_workload_matrix()
@@ -122,9 +117,9 @@ class ShiftScheduler:
         shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
 
         available_employees.sort(key=lambda emp: (
-            self.workload_matrix[emp][day_index][shift_index],  # 1️⃣ עדיפות למי שהכי פחות עבד במשבצת הזו
-            0 if shift.shift_type not in shift_types_assigned[emp] else 1,  # 2️⃣ עדיפות למי שלא עבד במשמרת מסוג זה
-            assigned_shifts[emp]  # 3️⃣ פחות משמרות כלליות → רק אם יש תיקו
+            self.workload_matrix[emp][day_index][shift_index],
+            0 if shift.shift_type not in shift_types_assigned[emp] else 1,
+            assigned_shifts[emp]
         ))
 
         for employee in available_employees:
@@ -228,7 +223,7 @@ class ShiftScheduler:
             matrix_data = {
                 emp.user_id: self.workload_matrix[emp] for emp in self.employees
             }
-            print(f"Saving workload matrix: {matrix_data}")  # ✅ הדפסה לפני השמירה
+            print(f"Saving workload matrix: {matrix_data}")
             with open(file_path, "w") as file:
                 json.dump(matrix_data, file, indent=4)
             print("✅ Workload matrix saved successfully!")
@@ -249,11 +244,10 @@ class ShiftScheduler:
                     return
 
                 matrix_data = json.loads(data)
-                print(f"🔍 Loaded workload matrix: {matrix_data}")  # ✅ הדפסה לבדיקה
+                print(f"🔍 Loaded workload matrix: {matrix_data}")
 
                 for emp in self.employees:
                     if emp.user_id in matrix_data:
-                        # ✅ שינוי: קישור נכון למטריצה
                         self.workload_matrix[emp] = matrix_data[emp.user_id]
 
                 print("✅ Workload matrix loaded successfully!")
@@ -262,4 +256,3 @@ class ShiftScheduler:
             print(f"❌ Error: Invalid JSON format in workload_matrix.json: {e}")
         except Exception as e:
             print(f"⚠️ Error loading workload matrix: {e}")
-

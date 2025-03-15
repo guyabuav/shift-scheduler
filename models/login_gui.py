@@ -14,7 +14,7 @@ class LoginGUI:
         self.username_entry.grid(row=0, column=1, padx=5, pady=5)
 
         tk.Label(root, text="Password:").grid(row=1, column=0, padx=5, pady=5)
-        self.password_entry = tk.Entry(root, show="*")  # הסיסמה תופיע מוסתרת
+        self.password_entry = tk.Entry(root, show="*")
         self.password_entry.grid(row=1, column=1, padx=5, pady=5)
 
         login_button = tk.Button(root, text="Login", command=self.login)

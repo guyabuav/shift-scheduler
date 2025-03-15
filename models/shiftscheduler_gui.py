@@ -1,15 +1,17 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog, messagebox
 from datetime import datetime, timedelta
-from models.shiftscheduler import ShiftScheduler
-from models.employee import Employee
 from models.constraint_gui import ConstraintManager
 import json
 
 
-
 class ShiftSchedulerGUI:
     def __init__(self, root, shift_scheduler, employee, logout_callback):
+        self.remove_button = None
+        self.add_button = None
+        self.selected_shift = None
+        self.shift_listbox = None
+        self.edit_window = None
         self.root = root
         self.root.title("Shift Scheduler")
 
@@ -27,7 +29,7 @@ class ShiftSchedulerGUI:
 
         week_menu = ttk.Combobox(root, textvariable=self.selected_week, values=self.week_options)
         week_menu.grid(row=0, column=1, padx=5, pady=5)
-        week_menu.bind("<<ComboboxSelected>>", self.update_schedule)
+        week_menu.bind("<<ComboboxSelected>>", lambda event: self.update_schedule())
 
         refresh_button = tk.Button(root, text="Refresh Schedule", command=self.update_schedule)
         refresh_button.grid(row=0, column=2, padx=5, pady=5)
@@ -77,7 +79,7 @@ class ShiftSchedulerGUI:
                 label.grid(row=row + 2, column=col + 1, padx=5, pady=5)
                 self.shift_labels[(day, shift_type)] = label
 
-    def update_schedule(self, event=None):
+    def update_schedule(self):
         selected_week = self.selected_week.get()
 
         print(f"🔍 Checking shifts for week: {selected_week}")
@@ -154,7 +156,7 @@ class ShiftSchedulerGUI:
             shift_info = f"{shift.date} - {shift.shift_type} ({len(shift.employees)}/{shift.max_employees})"
             self.shift_listbox.insert(tk.END, shift_info)
 
-    def on_shift_selected(self, event):
+    def on_shift_selected(self, event=None):
         selection = self.shift_listbox.curselection()
         if selection:
             index = selection[0]
@@ -200,23 +202,18 @@ class ShiftSchedulerGUI:
             messagebox.showerror("Error", "Employee has a constraint for this shift!")
             return
 
-
-        # 🔹 קביעת טווח התאריכים של השבוע הרלוונטי
         shift_date = datetime.strptime(self.selected_shift.date, "%d/%m/%Y")
         week_start = shift_date - timedelta(days=(shift_date.isoweekday() % 7))
         week_end = week_start + timedelta(days=6)
 
         print(f"🔍 Calculating shifts from {week_start.strftime('%d/%m/%Y')} to {week_end.strftime('%d/%m/%Y')}")
 
-
-        # 🔹 חישוב מספר המשמרות של העובד **רק עבור השבוע הזה**
-        # 🔍 **קריאת המשמרות מהקובץ `schedule.json` ובדיקת מספר המשמרות השבועי**
         total_shifts = 0
         try:
             with open("schedule.json", "r") as file:
                 schedule_data = json.load(file)
 
-            print(f"📂 Loaded schedule.json data: {schedule_data}")  # ✅ הדפס את כל הנתונים מהקובץ
+            print(f"📂 Loaded schedule.json data: {schedule_data}")
 
             for shift in schedule_data:
                 shift_date = datetime.strptime(shift["date"], "%d/%m/%Y")
@@ -225,7 +222,6 @@ class ShiftSchedulerGUI:
                     if employee.user_id in shift["employees"]:
                         print(f"✅ Found shift for {employee.full_name} on {shift['date']} ({shift['shift_type']})")
                         total_shifts += 1
-
 
 
         except (FileNotFoundError, json.JSONDecodeError):
@@ -238,13 +234,11 @@ class ShiftSchedulerGUI:
             if not response:
                 return
 
-        # ✅ הוספת העובד למשמרת
         self.selected_shift.add_employee(employee)
 
         day_index = (datetime.strptime(self.selected_shift.date, "%d/%m/%Y").weekday() + 1) % 7
         shift_index = ["Morning", "Evening", "Night"].index(self.selected_shift.shift_type)
 
-        # 🛠 תיקון הבעיה: לוודא שהמטריצה מתעדכנת באמת
         print(f"Before adding: {self.shift_scheduler.workload_matrix[employee][day_index][shift_index]}")
         self.shift_scheduler.workload_matrix[employee][day_index][shift_index] += 1
         print(f"After adding: {self.shift_scheduler.workload_matrix[employee][day_index][shift_index]}")
@@ -271,7 +265,6 @@ class ShiftSchedulerGUI:
 
         self.selected_shift.remove_employee(employee)
 
-        # ✅ עדכון `workload_matrix`
         day_index = (datetime.strptime(self.selected_shift.date, "%d/%m/%Y").weekday() + 1) % 7
         shift_index = ["Morning", "Evening", "Night"].index(self.selected_shift.shift_type)
         self.shift_scheduler.workload_matrix[employee][day_index][shift_index] -= 1

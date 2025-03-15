@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
 
 
 class ConstraintManager:
     def __init__(self, master, employee):
+        self.checkbuttons = None
         self.master = master
         self.employee = employee
         self.week_constraints = {}
