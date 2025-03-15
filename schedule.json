@@ -5,7 +5,7 @@
         "max_employees": 2,
         "employees": [
             "matanrak",
-            "amitron"
+            "dankof"
         ]
     },
     {
@@ -22,7 +22,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "dankof"
+            "amitron"
         ]
     },
     {
@@ -30,7 +30,7 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "amitron",
+            "dankof",
             "matanrak"
         ]
     },
@@ -40,7 +40,7 @@
         "max_employees": 2,
         "employees": [
             "guyabuav",
-            "chinos"
+            "bibinet"
         ]
     },
     {
@@ -48,46 +48,12 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "bibinet"
+            "chinos"
         ]
     },
     {
         "date": "04/03/2025",
         "shift_type": "Morning",
-        "max_employees": 2,
-        "employees": [
-            "chinos",
-            "matanrak"
-        ]
-    },
-    {
-        "date": "04/03/2025",
-        "shift_type": "Evening",
-        "max_employees": 2,
-        "employees": [
-            "amitron",
-            "dankof"
-        ]
-    },
-    {
-        "date": "04/03/2025",
-        "shift_type": "Night",
-        "max_employees": 1,
-        "employees": [
-            "guyabuav"
-        ]
-    },
-    {
-        "date": "05/03/2025",
-        "shift_type": "Morning",
-        "max_employees": 2,
-        "employees": [
-            "dankof"
-        ]
-    },
-    {
-        "date": "05/03/2025",
-        "shift_type": "Evening",
         "max_employees": 2,
         "employees": [
             "guyabuav",
@@ -95,11 +61,46 @@
         ]
     },
     {
+        "date": "04/03/2025",
+        "shift_type": "Evening",
+        "max_employees": 2,
+        "employees": [
+            "matanrak",
+            "dankof"
+        ]
+    },
+    {
+        "date": "04/03/2025",
+        "shift_type": "Night",
+        "max_employees": 1,
+        "employees": [
+            "bibinet"
+        ]
+    },
+    {
+        "date": "05/03/2025",
+        "shift_type": "Morning",
+        "max_employees": 2,
+        "employees": [
+            "amitron",
+            "matanrak"
+        ]
+    },
+    {
+        "date": "05/03/2025",
+        "shift_type": "Evening",
+        "max_employees": 2,
+        "employees": [
+            "dankof",
+            "chinos"
+        ]
+    },
+    {
         "date": "05/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "matanrak"
+            "guyabuav"
         ]
     },
     {
@@ -107,7 +108,8 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "bibinet"
+            "chinos",
+            "dankof"
         ]
     },
     {
@@ -115,8 +117,7 @@
         "shift_type": "Evening",
         "max_employees": 2,
         "employees": [
-            "matanrak",
-            "guyabuav"
+            "amitron"
         ]
     },
     {
@@ -124,7 +125,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "chinos"
+            "matanrak"
         ]
     },
     {
@@ -141,7 +142,7 @@
         "shift_type": "Evening",
         "max_employees": 1,
         "employees": [
-            "dankof"
+            "chinos"
         ]
     },
     {
@@ -149,7 +150,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "amitron"
+            "dankof"
         ]
     },
     {
@@ -157,7 +158,7 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "bibinet"
+            "guyabuav"
         ]
     },
     {
@@ -165,7 +166,7 @@
         "shift_type": "Evening",
         "max_employees": 2,
         "employees": [
-            "chinos"
+            "bibinet"
         ]
     },
     {
@@ -173,7 +174,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "dankof"
+            "amitron"
         ]
     },
     {
@@ -181,8 +182,8 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "bibinet",
-            "amitron"
+            "chinos",
+            "guyabuav"
         ]
     },
     {
@@ -191,7 +192,7 @@
         "max_employees": 2,
         "employees": [
             "matanrak",
-            "dankof"
+            "amitron"
         ]
     },
     {
@@ -199,7 +200,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "chinos"
+            "bibinet"
         ]
     },
     {
@@ -207,23 +208,24 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "dankof"
-        ]
-    },
-    {
-        "date": "10/03/2025",
-        "shift_type": "Evening",
-        "max_employees": 2,
-        "employees": [
             "amitron"
         ]
     },
     {
         "date": "10/03/2025",
+        "shift_type": "Evening",
+        "max_employees": 2,
+        "employees": [
+            "dankof",
+            "matanrak"
+        ]
+    },
+    {
+        "date": "10/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "matanrak"
+            "guyabuav"
         ]
     },
     {
@@ -231,8 +233,8 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "guyabuav",
-            "amitron"
+            "chinos",
+            "dankof"
         ]
     },
     {
@@ -241,7 +243,7 @@
         "max_employees": 2,
         "employees": [
             "bibinet",
-            "chinos"
+            "guyabuav"
         ]
     },
     {
@@ -249,7 +251,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "dankof"
+            "matanrak"
         ]
     },
     {
@@ -257,8 +259,8 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "chinos",
-            "matanrak"
+            "dankof",
+            "guyabuav"
         ]
     },
     {
@@ -266,8 +268,8 @@
         "shift_type": "Evening",
         "max_employees": 2,
         "employees": [
-            "guyabuav",
-            "dankof"
+            "amitron",
+            "matanrak"
         ]
     },
     {
@@ -275,7 +277,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "bibinet"
+            "chinos"
         ]
     },
     {
@@ -283,8 +285,8 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "amitron",
-            "guyabuav"
+            "matanrak",
+            "bibinet"
         ]
     },
     {
@@ -292,8 +294,7 @@
         "shift_type": "Evening",
         "max_employees": 2,
         "employees": [
-            "dankof",
-            "chinos"
+            "guyabuav"
         ]
     },
     {
@@ -301,7 +302,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "bibinet"
+            "amitron"
         ]
     },
     {
@@ -309,7 +310,7 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
-            "matanrak"
+            "dankof"
         ]
     },
     {
@@ -317,7 +318,7 @@
         "shift_type": "Evening",
         "max_employees": 1,
         "employees": [
-            "chinos"
+            "bibinet"
         ]
     },
     {
@@ -325,7 +326,7 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "guyabuav"
+            "chinos"
         ]
     },
     {
@@ -333,6 +334,7 @@
         "shift_type": "Morning",
         "max_employees": 2,
         "employees": [
+            "bibinet",
             "amitron"
         ]
     },
@@ -341,8 +343,7 @@
         "shift_type": "Evening",
         "max_employees": 2,
         "employees": [
-            "bibinet",
-            "guyabuav"
+            "chinos"
         ]
     },
     {
@@ -350,538 +351,385 @@
         "shift_type": "Night",
         "max_employees": 1,
         "employees": [
-            "matanrak"
-        ]
-    },
-    {
-        "date": "16/03/2025",
-        "shift_type": "Morning",
-        "max_employees": 2,
-        "employees": [
-            "guyabuav",
-            "amitron"
-        ]
-    },
-    {
-        "date": "16/03/2025",
-        "shift_type": "Evening",
-        "max_employees": 2,
-        "employees": [
-            "matanrak",
             "dankof"
         ]
     },
     {
         "date": "16/03/2025",
+        "shift_type": "Morning",
+        "max_employees": 2,
+        "employees": []
+    },
+    {
+        "date": "16/03/2025",
+        "shift_type": "Evening",
+        "max_employees": 2,
+        "employees": []
+    },
+    {
+        "date": "16/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "17/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "amitron",
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "17/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "dankof",
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "17/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "18/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "matanrak",
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "18/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "guyabuav",
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "18/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "19/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "19/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "chinos",
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "19/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "20/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "20/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "bibinet",
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "20/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "21/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "dankof",
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "21/03/2025",
         "shift_type": "Evening",
         "max_employees": 1,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "21/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "22/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "22/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "22/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "23/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "matanrak",
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "23/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "guyabuav",
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "23/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "24/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "bibinet",
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "24/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "chinos",
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "24/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "25/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "guyabuav",
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "25/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "matanrak",
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "25/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "26/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "26/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "dankof",
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "26/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "27/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "27/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "27/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "28/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "guyabuav",
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "28/03/2025",
         "shift_type": "Evening",
         "max_employees": 1,
-        "employees": [
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "28/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "29/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "matanrak",
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "29/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "29/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "30/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "bibinet",
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "30/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "amitron",
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "30/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "31/03/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "dankof",
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "31/03/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "bibinet",
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "31/03/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "01/04/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "amitron",
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "01/04/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "bibinet",
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "01/04/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "02/04/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "02/04/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "matanrak",
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "02/04/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "03/04/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "matanrak",
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "03/04/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "chinos",
-            "amitron"
-        ]
+        "employees": []
     },
     {
         "date": "03/04/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "04/04/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "matanrak"
-        ]
+        "employees": []
     },
     {
         "date": "04/04/2025",
         "shift_type": "Evening",
         "max_employees": 1,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     },
     {
         "date": "04/04/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "bibinet"
-        ]
+        "employees": []
     },
     {
         "date": "05/04/2025",
         "shift_type": "Morning",
         "max_employees": 2,
-        "employees": [
-            "chinos"
-        ]
+        "employees": []
     },
     {
         "date": "05/04/2025",
         "shift_type": "Evening",
         "max_employees": 2,
-        "employees": [
-            "dankof"
-        ]
+        "employees": []
     },
     {
         "date": "05/04/2025",
         "shift_type": "Night",
         "max_employees": 1,
-        "employees": [
-            "guyabuav"
-        ]
+        "employees": []
     }
 ]

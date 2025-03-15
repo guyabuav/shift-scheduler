@@ -12,14 +12,25 @@
         },
         "09/03/2025": {
             "Sunday": [
-                "Morning",
                 "Evening",
                 "Night"
             ],
+            "Tuesday": [
+                "Morning"
+            ]
+        },
+        "16/03/2025": {
+            "Sunday": [
+                "Morning"
+            ],
             "Monday": [
-                "Morning",
-                "Evening",
+                "Evening"
+            ],
+            "Thursday": [
                 "Night"
+            ],
+            "Saturday": [
+                "Morning"
             ]
         }
     },

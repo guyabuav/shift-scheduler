@@ -13,6 +13,7 @@ class ShiftScheduler:
         self.workload_matrix = {
             emp: [[0 for _ in range(3)] for _ in range(7)] for emp in employees
         }
+        self.assigned_shifts = {emp: 0 for emp in self.employees}
         self.load_workload_matrix()
         self.load_schedule_from_file()
 
@@ -69,7 +70,9 @@ class ShiftScheduler:
                         # ✅ עדכון המטריצה רק אחרי שהעובד שובץ בפועל
                         day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
                         shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
+                        print(f"Before: {self.workload_matrix[best_employee]}")
                         self.workload_matrix[best_employee][day_index][shift_index] += 1
+                        print(f"After: {self.workload_matrix[best_employee]}")
 
                         print(f"✅ {best_employee.full_name} assigned to {shift.shift_type} on {shift.date}")
                     else:
@@ -100,8 +103,6 @@ class ShiftScheduler:
                                 shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
                                 self.workload_matrix[best_employee][day_index][shift_index] += 1
 
-                                print(
-                                    f"✅ {best_employee.full_name} assigned to extra shift {shift.shift_type} on {shift.date}")
                                 break  # יוצאים כדי לא לחזור על אותו עובד יותר מדי פעמים
 
                     if assigned_shifts[employee] < 5:
@@ -227,6 +228,7 @@ class ShiftScheduler:
             matrix_data = {
                 emp.user_id: self.workload_matrix[emp] for emp in self.employees
             }
+            print(f"Saving workload matrix: {matrix_data}")  # ✅ הדפסה לפני השמירה
             with open(file_path, "w") as file:
                 json.dump(matrix_data, file, indent=4)
             print("✅ Workload matrix saved successfully!")
@@ -244,13 +246,15 @@ class ShiftScheduler:
                 data = file.read().strip()
                 if not data:
                     print("⚠️ Warning: workload_matrix.json is empty! Keeping fresh matrix.")
-                    return  # ❌ אל תדרוס את מה שקיים
+                    return
 
                 matrix_data = json.loads(data)
+                print(f"🔍 Loaded workload matrix: {matrix_data}")  # ✅ הדפסה לבדיקה
 
                 for emp in self.employees:
                     if emp.user_id in matrix_data:
-                        self.workload_matrix[emp] = matrix_data[emp]
+                        # ✅ שינוי: קישור נכון למטריצה
+                        self.workload_matrix[emp] = matrix_data[emp.user_id]
 
                 print("✅ Workload matrix loaded successfully!")
 
@@ -258,3 +262,4 @@ class ShiftScheduler:
             print(f"❌ Error: Invalid JSON format in workload_matrix.json: {e}")
         except Exception as e:
             print(f"⚠️ Error loading workload matrix: {e}")
+

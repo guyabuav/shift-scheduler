@@ -1,9 +1,11 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, simpledialog, messagebox
 from datetime import datetime, timedelta
 from models.shiftscheduler import ShiftScheduler
 from models.employee import Employee
 from models.constraint_gui import ConstraintManager
+import json
+
 
 
 class ShiftSchedulerGUI:
@@ -32,6 +34,9 @@ class ShiftSchedulerGUI:
 
         assign_button = tk.Button(root, text="Assign Shifts", command=self.assign_shifts)
         assign_button.grid(row=0, column=3, padx=5, pady=5)
+
+        self.edit_button = tk.Button(self.root, text="Edit Shift", command=self.open_edit_shift_window)
+        self.edit_button.grid(row=0, column=4, padx=5, pady=5)
 
         logout_button = tk.Button(root, text="Logout", command=self.logout)
         logout_button.grid(row=0, column=5, padx=5, pady=5)
@@ -71,7 +76,6 @@ class ShiftSchedulerGUI:
                 label = tk.Label(self.root, text="--", borderwidth=1, relief="solid", width=18, height=2)
                 label.grid(row=row + 2, column=col + 1, padx=5, pady=5)
                 self.shift_labels[(day, shift_type)] = label
-
 
     def update_schedule(self, event=None):
         selected_week = self.selected_week.get()
@@ -127,3 +131,158 @@ class ShiftSchedulerGUI:
             start_dates.add(week_start.strftime("%d/%m/%Y"))
 
         return sorted(start_dates)
+
+    def open_edit_shift_window(self):
+        self.edit_window = tk.Toplevel(self.root)
+        self.edit_window.title("Edit Shift")
+
+        self.selected_shift = None
+        self.shift_listbox = tk.Listbox(self.edit_window, height=10, width=50)
+        self.shift_listbox.pack()
+        self.load_shifts()
+        self.shift_listbox.bind("<<ListboxSelect>>", self.on_shift_selected)
+
+        self.add_button = tk.Button(self.edit_window, text="Add Employee", command=self.add_employee)
+        self.add_button.pack()
+
+        self.remove_button = tk.Button(self.edit_window, text="Remove Employee", command=self.remove_employee)
+        self.remove_button.pack()
+
+    def load_shifts(self):
+        self.shift_listbox.delete(0, tk.END)
+        for shift in self.shift_scheduler.shifts:
+            shift_info = f"{shift.date} - {shift.shift_type} ({len(shift.employees)}/{shift.max_employees})"
+            self.shift_listbox.insert(tk.END, shift_info)
+
+    def on_shift_selected(self, event):
+        selection = self.shift_listbox.curselection()
+        if selection:
+            index = selection[0]
+            self.selected_shift = self.shift_scheduler.shifts[index]
+            self.show_shift_details()
+
+    def show_shift_details(self):
+        if not self.selected_shift:
+            return
+
+        employees = "\n".join([emp.full_name for emp in self.selected_shift.employees])
+        messagebox.showinfo("Shift Details",
+                            f"{self.selected_shift.date} - {self.selected_shift.shift_type}\nEmployees:\n{employees}")
+
+    def add_employee(self):
+        if not self.selected_shift:
+            messagebox.showerror("Error", "No shift selected!")
+            return
+
+        employee_name = simpledialog.askstring("Add Employee", "Enter employee name:")
+        if not employee_name:
+            return
+
+        employee = next((emp for emp in self.shift_scheduler.employees if emp.full_name == employee_name), None)
+        if not employee:
+            messagebox.showerror("Error", "Employee not found!")
+            return
+
+        if len(self.selected_shift.employees) >= self.selected_shift.max_employees:
+            messagebox.showerror("Error", "Shift is already full!")
+            return
+
+        if employee in self.selected_shift.employees:
+            messagebox.showerror("Error", "Employee already in this shift!")
+            return
+
+        if employee.user_id in [e.user_id for shift in self.shift_scheduler.shifts if
+                                shift.date == self.selected_shift.date for e in shift.employees]:
+            messagebox.showerror("Error", "Employee already has a shift that day!")
+            return
+
+        if self.shift_scheduler.has_constraint(employee, self.selected_shift, self.selected_shift.date):
+            messagebox.showerror("Error", "Employee has a constraint for this shift!")
+            return
+
+
+        # 🔹 קביעת טווח התאריכים של השבוע הרלוונטי
+        shift_date = datetime.strptime(self.selected_shift.date, "%d/%m/%Y")
+        week_start = shift_date - timedelta(days=(shift_date.isoweekday() % 7))
+        week_end = week_start + timedelta(days=6)
+
+        print(f"🔍 Calculating shifts from {week_start.strftime('%d/%m/%Y')} to {week_end.strftime('%d/%m/%Y')}")
+
+
+        # 🔹 חישוב מספר המשמרות של העובד **רק עבור השבוע הזה**
+        # 🔍 **קריאת המשמרות מהקובץ `schedule.json` ובדיקת מספר המשמרות השבועי**
+        total_shifts = 0
+        try:
+            with open("schedule.json", "r") as file:
+                schedule_data = json.load(file)
+
+            print(f"📂 Loaded schedule.json data: {schedule_data}")  # ✅ הדפס את כל הנתונים מהקובץ
+
+            for shift in schedule_data:
+                shift_date = datetime.strptime(shift["date"], "%d/%m/%Y")
+                if week_start <= shift_date <= week_end:
+
+                    if employee.user_id in shift["employees"]:
+                        print(f"✅ Found shift for {employee.full_name} on {shift['date']} ({shift['shift_type']})")
+                        total_shifts += 1
+
+
+
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("⚠️ Warning: Unable to read schedule.json. Assuming no shifts assigned.")
+
+        print(f"🔍 Total shifts for {employee.full_name} this week: {total_shifts}")
+
+        if total_shifts >= 5:
+            response = messagebox.askyesno("Warning", "Employee already has 5 shifts. Do you want to proceed?")
+            if not response:
+                return
+
+        # ✅ הוספת העובד למשמרת
+        self.selected_shift.add_employee(employee)
+
+        day_index = (datetime.strptime(self.selected_shift.date, "%d/%m/%Y").weekday() + 1) % 7
+        shift_index = ["Morning", "Evening", "Night"].index(self.selected_shift.shift_type)
+
+        # 🛠 תיקון הבעיה: לוודא שהמטריצה מתעדכנת באמת
+        print(f"Before adding: {self.shift_scheduler.workload_matrix[employee][day_index][shift_index]}")
+        self.shift_scheduler.workload_matrix[employee][day_index][shift_index] += 1
+        print(f"After adding: {self.shift_scheduler.workload_matrix[employee][day_index][shift_index]}")
+
+        self.shift_scheduler.save_schedule_to_file()
+        self.shift_scheduler.save_workload_matrix()
+
+        messagebox.showinfo("Success", f"{employee.full_name} added to shift!")
+        self.load_shifts()
+
+    def remove_employee(self):
+        if not self.selected_shift:
+            messagebox.showerror("Error", "No shift selected!")
+            return
+
+        employee_name = simpledialog.askstring("Remove Employee", "Enter employee name:")
+        if not employee_name:
+            return
+
+        employee = next((emp for emp in self.selected_shift.employees if emp.full_name == employee_name), None)
+        if not employee:
+            messagebox.showerror("Error", "Employee not found in this shift!")
+            return
+
+        self.selected_shift.remove_employee(employee)
+
+        # ✅ עדכון `workload_matrix`
+        day_index = (datetime.strptime(self.selected_shift.date, "%d/%m/%Y").weekday() + 1) % 7
+        shift_index = ["Morning", "Evening", "Night"].index(self.selected_shift.shift_type)
+        self.shift_scheduler.workload_matrix[employee][day_index][shift_index] -= 1
+        self.shift_scheduler.save_schedule_to_file()
+        self.shift_scheduler.save_workload_matrix()
+
+        if len(self.selected_shift.employees) == 0:
+            messagebox.showwarning("Warning", "Shift has no employees left!")
+
+        self.shift_scheduler.save_schedule_to_file()
+        self.shift_scheduler.save_workload_matrix()
+
+        messagebox.showinfo("Success", f"{employee.full_name} removed from shift!")
+        self.load_shifts()

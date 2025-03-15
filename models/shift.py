@@ -32,5 +32,3 @@ class Shift:
     def print_shift_employee(self):
         for i, employee in enumerate(self.employees):
             print(f"{i+1}. {employee}")
-
-
