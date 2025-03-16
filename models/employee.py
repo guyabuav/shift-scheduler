@@ -24,7 +24,6 @@ class Employee(Person):
     def submit_constraints(self, week_start_date, constraints):
         self.constraints[week_start_date] = constraints
         self.save_constraints_to_file()
-        print(f"✅ Constraints submitted for {self.full_name} in the week of {week_start_date}")
 
     def __str__(self):
         return super().__str__() + f"Employee Number: {self.employee_number}, User Id: {self.user_id}, Constraints: {self.constraints}"
@@ -39,7 +38,6 @@ class Employee(Person):
                     try:
                         all_constraints = json.load(file)
                     except json.JSONDecodeError:
-                        print(f"⚠️ Warning: {file_path} was corrupted. Resetting constraints.")
                         all_constraints = {}
 
             all_constraints[self.user_id] = self.constraints
@@ -66,7 +64,6 @@ class Employee(Person):
             with open(file_path, "r", encoding="utf-8") as file:
                 data = file.read().strip()
                 if not data:
-                    print(f"⚠️ Warning: {file_path} is empty! Resetting constraints.")
                     self.constraints = {}
                     return
 
@@ -77,7 +74,6 @@ class Employee(Person):
                     self.constraints = all_constraints[user_id_str]
                     print(f"✅ Constraints loaded for {self.full_name}: {json.dumps(self.constraints, indent=4)}")
                 else:
-                    print(f"⚠️ No constraints found for user ID {self.user_id}, setting empty constraints.")
                     self.constraints = {}
 
         except json.JSONDecodeError as e:

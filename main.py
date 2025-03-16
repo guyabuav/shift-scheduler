@@ -22,9 +22,10 @@ shift_scheduler.create_weekly_shifts("09/03/2025")
 shift_scheduler.create_weekly_shifts("16/03/2025")
 shift_scheduler.create_weekly_shifts("23/03/2025")
 shift_scheduler.create_weekly_shifts("30/03/2025")
-
-print(emp1.constraints)
-emp1.save_constraints_to_file()
+shift_scheduler.create_weekly_shifts("06/04/2025")
+shift_scheduler.create_weekly_shifts("13/04/2025")
+shift_scheduler.create_weekly_shifts("20/04/2025")
+shift_scheduler.create_weekly_shifts("27/04/2025")
 
 login_manager = LoginManager()
 
@@ -50,7 +51,6 @@ def on_login_success(username, role):
 
     if role == "Manager":
         root.title(f"Manager Panel - {username}")
-        print(f"logout function: {logout}")
         app = ShiftSchedulerGUI(root, shift_scheduler, username, logout)
     else:
         root.title(f"Employee Panel - {username}")

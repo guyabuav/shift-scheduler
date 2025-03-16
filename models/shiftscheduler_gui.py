@@ -20,7 +20,11 @@ class ShiftSchedulerGUI:
         self.logout_callback = logout_callback
 
         self.selected_week = tk.StringVar()
-        self.week_options = self.get_week_start_dates()
+
+        self.week_options = sorted(
+            self.get_week_start_dates(),
+            key=lambda date_str: datetime.strptime(date_str, "%d/%m/%Y")
+        )
         if self.week_options:
             self.selected_week.set(self.week_options[0])
 
@@ -81,9 +85,6 @@ class ShiftSchedulerGUI:
 
     def update_schedule(self):
         selected_week = self.selected_week.get()
-
-        print(f"🔍 Checking shifts for week: {selected_week}")
-        print(f"📂 Current shifts in memory: {[s.__dict__ for s in self.shift_scheduler.shifts]}")
 
         for label in self.shift_labels.values():
             label.config(text="--")

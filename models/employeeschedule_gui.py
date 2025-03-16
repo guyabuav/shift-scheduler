@@ -26,8 +26,10 @@ class EmployeeScheduleGUI:
         controls_frame.pack(pady=5)
 
         self.selected_week = tk.StringVar()
-        self.week_options = self.get_week_start_dates()
-        self.week_options.sort()
+        self.week_options = sorted(
+            self.get_week_start_dates(),
+            key=lambda date_str: datetime.strptime(date_str, "%d/%m/%Y")
+        )
         if self.week_options:
             self.selected_week.set(self.week_options[0])
 
@@ -94,6 +96,6 @@ class EmployeeScheduleGUI:
 
     def get_logged_in_employee(self):
         for emp in self.shift_scheduler.employees:
-            if emp.user_id == self.username:  # בדיקה לפי user_id
+            if emp.user_id == self.username:
                 return emp
         return None

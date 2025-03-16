@@ -24,7 +24,6 @@ class ShiftScheduler:
 
         existing_shifts = [s for s in self.shifts if self.is_in_week(s.date, start_date)]
         if existing_shifts:
-            print(f"⚠️ Shifts for the week of {start_date} already exist. Not creating new shifts.")
             return
 
         for i, day in enumerate(days):
@@ -67,9 +66,7 @@ class ShiftScheduler:
 
                         day_index = (datetime.strptime(shift.date, "%d/%m/%Y").weekday() + 1) % 7
                         shift_index = ["Morning", "Evening", "Night"].index(shift.shift_type)
-                        print(f"Before: {self.workload_matrix[best_employee]}")
                         self.workload_matrix[best_employee][day_index][shift_index] += 1
-                        print(f"After: {self.workload_matrix[best_employee]}")
 
                         print(f"✅ {best_employee.full_name} assigned to {shift.shift_type} on {shift.date}")
                     else:
@@ -240,7 +237,6 @@ class ShiftScheduler:
             with open(file_path, "r") as file:
                 data = file.read().strip()
                 if not data:
-                    print("⚠️ Warning: workload_matrix.json is empty! Keeping fresh matrix.")
                     return
 
                 matrix_data = json.loads(data)
